@@ -171,14 +171,36 @@ const evidenceDocs: EvidenceDoc[] = [
       { type: 'paragraph', text: 'This document summarizes the clinical evidence supporting ongoing diabetes management for the patient.' },
       { type: 'divider' },
       { type: 'header', level: 2, text: 'Clinical Notes' },
-      { type: 'note', noteId: 'note-1', title: 'Recent Progress Note' },
+      {
+        type: 'note',
+        noteId: 'note-1',
+        title: 'Recent Progress Note',
+        selections: [
+          {
+            offset: 0,
+            length: 65,  // "## Chief Complaint\nPatient presents for routine diabetes follow-up."
+            highlights: [
+              { offset: 19, length: 46 }  // "Patient presents for routine diabetes follow-up."
+            ]
+          },
+          {
+            offset: 67,
+            length: 150,  // Assessment section
+            highlights: [
+              { offset: 45, length: 32 },  // "A1c decreased from 8.2% to 7.4%"
+              { offset: 78, length: 40 }   // "Patient reports good adherence to metformin"
+            ]
+          }
+        ]
+      },
       { type: 'divider' },
       { type: 'header', level: 2, text: 'Laboratory Results' },
-      { type: 'lab', labId: 'lab-1' },
-      { type: 'lab', labId: 'lab-2' },
+      { type: 'lab', labIds: ['lab-1', 'lab-2'] },  // A1c and Fasting Glucose together
+      { type: 'lab', labIds: ['lab-4'] },           // Creatinine separately
       { type: 'divider' },
       { type: 'header', level: 2, text: 'Current Medications' },
-      { type: 'prescription', prescriptionId: 'rx-1' },
+      { type: 'prescription', prescriptionIds: ['rx-1'] },  // Metformin
+      { type: 'prescription', prescriptionIds: ['rx-2', 'rx-3'], title: 'Cardiac Medications' },  // Statin + Aspirin together
     ],
     patientId: 'patient-001',
     createdAt: '2024-01-16T09:00:00Z',

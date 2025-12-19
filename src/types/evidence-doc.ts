@@ -1,19 +1,32 @@
+// Selection and highlight types for note sections
+export interface Highlight {
+  offset: number;        // Character offset within the selection
+  length: number;        // Length of highlighted text
+}
+
+export interface NoteSelection {
+  offset: number;        // Character offset within the note content
+  length: number;        // Length of selected text
+  highlights?: Highlight[];  // Optional highlights within the selection
+}
+
 // Section types that reference source data
 export interface NoteSection {
   type: 'note';
   noteId: string;
-  title?: string;        // Optional override title
+  title?: string;              // Optional override title
+  selections?: NoteSelection[];  // Optional list of selections to include
 }
 
 export interface LabSection {
   type: 'lab';
-  labId: string;
+  labIds: string[];      // Multiple labs can be rendered together
   title?: string;
 }
 
 export interface PrescriptionSection {
   type: 'prescription';
-  prescriptionId: string;
+  prescriptionIds: string[];  // Multiple prescriptions can be rendered together
   title?: string;
 }
 
