@@ -39,12 +39,12 @@ export function initializeDatabase() {
     )
   `);
 
-  // Prescriptions table
+  // Medications table
   db.exec(`
-    CREATE TABLE IF NOT EXISTS prescriptions (
+    CREATE TABLE IF NOT EXISTS medications (
       id TEXT PRIMARY KEY,
       prescriber TEXT NOT NULL,
-      medication TEXT NOT NULL,
+      drug TEXT NOT NULL,
       dosingInstructions TEXT NOT NULL,
       quantity INTEGER NOT NULL,
       quantityUnit TEXT NOT NULL,

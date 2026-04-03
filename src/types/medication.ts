@@ -3,14 +3,14 @@ export interface Diagnosis {
   description: string;
 }
 
-export interface Prescription {
+export interface Medication {
   id: string;
   prescriber: {
     name: string;
     npi?: string;
     deaNumber?: string;
   };
-  medication: {
+  drug: {
     name: string;
     strength?: string;   // e.g., "500mg"
     form?: string;       // e.g., "tablet", "capsule", "injection"
@@ -27,4 +27,3 @@ export interface Prescription {
   patientId: string;
   writtenDate: string;         // ISO 8601 timestamp
 }
-

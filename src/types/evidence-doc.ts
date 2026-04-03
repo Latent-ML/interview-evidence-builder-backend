@@ -24,9 +24,9 @@ export interface LabSection {
   title?: string;
 }
 
-export interface PrescriptionSection {
-  type: 'prescription';
-  prescriptionIds: string[];  // Multiple prescriptions can be rendered together
+export interface MedicationSection {
+  type: 'medication';
+  medicationIds: string[];  // Multiple medications can be rendered together
   title?: string;
 }
 
@@ -50,7 +50,7 @@ export interface DividerSection {
 export type EvidenceSection =
   | NoteSection
   | LabSection
-  | PrescriptionSection
+  | MedicationSection
   | HeaderSection
   | ParagraphSection
   | DividerSection;

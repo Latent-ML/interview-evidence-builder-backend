@@ -1,9 +1,9 @@
 import { initializeDatabase, db } from './db';
 import { insertNote } from './db/notes';
 import { insertLab } from './db/labs';
-import { insertPrescription } from './db/prescriptions';
+import { insertMedication } from './db/medications';
 import { insertEvidenceDoc } from './db/evidence-docs';
-import { Note, Lab, Prescription, EvidenceDoc } from './types';
+import { Note, Lab, Medication, EvidenceDoc } from './types';
 
 // Seed data
 const notes: Note[] = [
@@ -96,13 +96,101 @@ const labs: Lab[] = [
     status: 'final',
     patientId: 'patient-001',
   },
+  {
+    id: 'lab-5',
+    type: 'HDL Cholesterol',
+    code: '2085-9',
+    value: 38,
+    unit: 'mg/dL',
+    referenceRange: { low: 40, high: 60 },
+    date: '2024-01-18T08:00:00Z',
+    status: 'final',
+    patientId: 'patient-001',
+  },
+  {
+    id: 'lab-6',
+    type: 'Triglycerides',
+    code: '2571-8',
+    value: 210,
+    unit: 'mg/dL',
+    referenceRange: { low: 0, high: 150 },
+    date: '2024-01-18T08:00:00Z',
+    status: 'final',
+    patientId: 'patient-001',
+  },
+  {
+    id: 'lab-7',
+    type: 'Total Cholesterol',
+    code: '2093-3',
+    value: 222,
+    unit: 'mg/dL',
+    referenceRange: { low: 0, high: 200 },
+    date: '2024-01-18T08:00:00Z',
+    status: 'final',
+    patientId: 'patient-001',
+  },
+  {
+    id: 'lab-8',
+    type: 'TSH',
+    code: '3016-3',
+    value: 2.5,
+    unit: 'mIU/L',
+    referenceRange: { low: 0.4, high: 4.0 },
+    date: '2024-01-15T08:00:00Z',
+    status: 'final',
+    patientId: 'patient-001',
+  },
+  {
+    id: 'lab-9',
+    type: 'Hemoglobin A1c',
+    code: '4548-4',
+    value: 8.2,
+    unit: '%',
+    referenceRange: { low: 4.0, high: 5.6 },
+    date: '2023-10-12T08:00:00Z',
+    status: 'final',
+    patientId: 'patient-001',
+  },
+  {
+    id: 'lab-10',
+    type: 'Fasting Glucose',
+    code: '1558-6',
+    value: 148,
+    unit: 'mg/dL',
+    referenceRange: { low: 70, high: 100 },
+    date: '2023-10-12T07:30:00Z',
+    status: 'final',
+    patientId: 'patient-001',
+  },
+  {
+    id: 'lab-11',
+    type: 'BUN',
+    code: '3094-0',
+    value: 18,
+    unit: 'mg/dL',
+    referenceRange: { low: 7, high: 20 },
+    date: '2024-01-15T08:00:00Z',
+    status: 'final',
+    patientId: 'patient-001',
+  },
+  {
+    id: 'lab-12',
+    type: 'eGFR',
+    code: '48642-3',
+    value: 88,
+    unit: 'mL/min/1.73m2',
+    referenceRange: { low: 60 },
+    date: '2024-01-15T08:00:00Z',
+    status: 'final',
+    patientId: 'patient-001',
+  },
 ];
 
-const prescriptions: Prescription[] = [
+const medications: Medication[] = [
   {
-    id: 'rx-1',
+    id: 'med-1',
     prescriber: { name: 'Dr. Sarah Chen', npi: '1234567890' },
-    medication: {
+    drug: {
       name: 'Metformin',
       strength: '500mg',
       form: 'tablet',
@@ -119,9 +207,9 @@ const prescriptions: Prescription[] = [
     writtenDate: '2024-01-15T10:45:00Z',
   },
   {
-    id: 'rx-2',
+    id: 'med-2',
     prescriber: { name: 'Dr. Michael Park', npi: '0987654321' },
-    medication: {
+    drug: {
       name: 'Atorvastatin',
       strength: '40mg',
       form: 'tablet',
@@ -138,9 +226,9 @@ const prescriptions: Prescription[] = [
     writtenDate: '2024-01-20T14:30:00Z',
   },
   {
-    id: 'rx-3',
+    id: 'med-3',
     prescriber: { name: 'Dr. Michael Park', npi: '0987654321' },
-    medication: {
+    drug: {
       name: 'Aspirin',
       strength: '81mg',
       form: 'tablet',
@@ -158,6 +246,83 @@ const prescriptions: Prescription[] = [
     status: 'active',
     patientId: 'patient-001',
     writtenDate: '2024-01-20T14:30:00Z',
+  },
+  {
+    id: 'med-4',
+    prescriber: { name: 'Dr. Sarah Chen', npi: '1234567890' },
+    drug: {
+      name: 'Lisinopril',
+      strength: '10mg',
+      form: 'tablet',
+      rxcui: '314076',
+    },
+    dosingInstructions: 'Take 1 tablet by mouth once daily',
+    quantity: 30,
+    quantityUnit: 'tablets',
+    daysSupply: 30,
+    startDate: '2023-06-10',
+    diagnoses: [{ code: 'I10', description: 'Essential (primary) hypertension' }],
+    status: 'active',
+    patientId: 'patient-001',
+    writtenDate: '2023-06-10T09:00:00Z',
+  },
+  {
+    id: 'med-5',
+    prescriber: { name: 'Dr. Sarah Chen', npi: '1234567890' },
+    drug: {
+      name: 'Metformin',
+      strength: '500mg',
+      form: 'tablet',
+      rxcui: '861004',
+    },
+    dosingInstructions: 'Take 1 tablet by mouth once daily with dinner',
+    quantity: 30,
+    quantityUnit: 'tablets',
+    daysSupply: 30,
+    startDate: '2023-06-10',
+    endDate: '2024-01-15',
+    diagnoses: [{ code: 'E11.9', description: 'Type 2 diabetes mellitus without complications' }],
+    status: 'completed',
+    patientId: 'patient-001',
+    writtenDate: '2023-06-10T09:15:00Z',
+  },
+  {
+    id: 'med-6',
+    prescriber: { name: 'Dr. Michael Park', npi: '0987654321' },
+    drug: {
+      name: 'Amlodipine',
+      strength: '5mg',
+      form: 'tablet',
+      rxcui: '329528',
+    },
+    dosingInstructions: 'Take 1 tablet by mouth once daily',
+    quantity: 30,
+    quantityUnit: 'tablets',
+    daysSupply: 30,
+    startDate: '2024-01-20',
+    diagnoses: [{ code: 'I10', description: 'Essential (primary) hypertension' }],
+    status: 'active',
+    patientId: 'patient-001',
+    writtenDate: '2024-01-20T14:45:00Z',
+  },
+  {
+    id: 'med-7',
+    prescriber: { name: 'Dr. Sarah Chen', npi: '1234567890' },
+    drug: {
+      name: 'Omeprazole',
+      strength: '20mg',
+      form: 'capsule',
+      rxcui: '198053',
+    },
+    dosingInstructions: 'Take 1 capsule by mouth once daily before breakfast',
+    quantity: 30,
+    quantityUnit: 'capsules',
+    daysSupply: 30,
+    startDate: '2023-11-01',
+    diagnoses: [{ code: 'K21.0', description: 'Gastro-esophageal reflux disease with esophagitis' }],
+    status: 'active',
+    patientId: 'patient-001',
+    writtenDate: '2023-11-01T11:00:00Z',
   },
 ];
 
@@ -178,29 +343,29 @@ const evidenceDocs: EvidenceDoc[] = [
         selections: [
           {
             offset: 0,
-            length: 65,  // "## Chief Complaint\nPatient presents for routine diabetes follow-up."
+            length: 65,
             highlights: [
-              { offset: 19, length: 46 }  // "Patient presents for routine diabetes follow-up."
+              { offset: 19, length: 46 }
             ]
           },
           {
             offset: 67,
-            length: 150,  // Assessment section
+            length: 150,
             highlights: [
-              { offset: 45, length: 32 },  // "A1c decreased from 8.2% to 7.4%"
-              { offset: 78, length: 40 }   // "Patient reports good adherence to metformin"
+              { offset: 45, length: 32 },
+              { offset: 78, length: 40 }
             ]
           }
         ]
       },
       { type: 'divider' },
       { type: 'header', level: 2, text: 'Laboratory Results' },
-      { type: 'lab', labIds: ['lab-1', 'lab-2'] },  // A1c and Fasting Glucose together
-      { type: 'lab', labIds: ['lab-4'] },           // Creatinine separately
+      { type: 'lab', labIds: ['lab-1', 'lab-2'] },
+      { type: 'lab', labIds: ['lab-4'] },
       { type: 'divider' },
       { type: 'header', level: 2, text: 'Current Medications' },
-      { type: 'prescription', prescriptionIds: ['rx-1'] },  // Metformin
-      { type: 'prescription', prescriptionIds: ['rx-2', 'rx-3'], title: 'Cardiac Medications' },  // Statin + Aspirin together
+      { type: 'medication', medicationIds: ['med-1'] },
+      { type: 'medication', medicationIds: ['med-2', 'med-3'], title: 'Cardiac Medications' },
     ],
     patientId: 'patient-001',
     createdAt: '2024-01-16T09:00:00Z',
@@ -219,7 +384,7 @@ async function seed() {
   // Clear existing data
   console.log('🗑️  Clearing existing data...');
   db.exec('DELETE FROM evidence_docs');
-  db.exec('DELETE FROM prescriptions');
+  db.exec('DELETE FROM medications');
   db.exec('DELETE FROM labs');
   db.exec('DELETE FROM notes');
 
@@ -235,10 +400,10 @@ async function seed() {
     insertLab(lab);
   }
 
-  // Insert prescriptions
-  console.log(`💊 Inserting ${prescriptions.length} prescriptions...`);
-  for (const prescription of prescriptions) {
-    insertPrescription(prescription);
+  // Insert medications
+  console.log(`💊 Inserting ${medications.length} medications...`);
+  for (const medication of medications) {
+    insertMedication(medication);
   }
 
   // Insert evidence docs
@@ -252,7 +417,7 @@ async function seed() {
 Summary:
   - Notes: ${notes.length}
   - Labs: ${labs.length}
-  - Prescriptions: ${prescriptions.length}
+  - Medications: ${medications.length}
   - Evidence Docs: ${evidenceDocs.length}
   `);
 
@@ -263,4 +428,3 @@ seed().catch((err) => {
   console.error('❌ Seed failed:', err);
   process.exit(1);
 });
-

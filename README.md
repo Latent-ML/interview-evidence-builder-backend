@@ -1,6 +1,6 @@
 # Evidence Builder Backend
 
-A simple TypeScript Express backend for managing clinical evidence documents.
+A TypeScript Express backend that serves patient clinical data and manages evidence documents.
 
 ## Quick Start
 
@@ -17,21 +17,42 @@ npm run dev
 
 The server will start at **http://localhost:3210**
 
-Data is persisted in SQLite at `evidence-builder.db` in the project root.
+Data is persisted in SQLite at `evidence-builder.db` in the project root. If you need to reset the data, just run `npm run seed` again.
 
-## API Endpoints
+## Data Overview
+
+The API serves three categories of data:
+
+### Patient Data (read-only)
+
+These endpoints return clinical data from the patient's medical record. Your frontend will load this data and let users select items to include in their evidence documents.
+
+| Method | Endpoint           | Description                |
+| ------ | ------------------ | -------------------------- |
+| GET    | `/notes`           | Get all clinical notes     |
+| GET    | `/notes/:id`       | Get a single clinical note |
+| GET    | `/labs`            | Get all lab results        |
+| GET    | `/labs/:id`        | Get a single lab result    |
+| GET    | `/medications`     | Get all medications        |
+| GET    | `/medications/:id` | Get a single medication    |
+
+### Evidence Documents (full CRUD)
+
+Evidence documents are what the user builds — an ordered list of sections that reference patient data and organizational elements.
 
 | Method | Endpoint             | Description                    |
 | ------ | -------------------- | ------------------------------ |
-| GET    | `/health`            | Health check                   |
-| GET    | `/notes`             | Get all clinical notes         |
-| GET    | `/labs`              | Get all lab results            |
-| GET    | `/prescriptions`     | Get all prescriptions          |
 | GET    | `/evidence-docs`     | Get all evidence documents     |
 | GET    | `/evidence-docs/:id` | Get a single evidence document |
 | POST   | `/evidence-docs`     | Create a new evidence document |
 | PUT    | `/evidence-docs/:id` | Update an evidence document    |
 | DELETE | `/evidence-docs/:id` | Delete an evidence document    |
+
+### Utility
+
+| Method | Endpoint  | Description  |
+| ------ | --------- | ------------ |
+| GET    | `/health` | Health check |
 
 ## Example Requests
 
@@ -47,10 +68,10 @@ curl http://localhost:3210/notes
 curl http://localhost:3210/labs
 ```
 
-### Get all prescriptions
+### Get all medications
 
 ```bash
-curl http://localhost:3210/prescriptions
+curl http://localhost:3210/medications
 ```
 
 ### Create an evidence document
@@ -68,8 +89,8 @@ curl -X POST http://localhost:3210/evidence-docs \
       { "type": "paragraph", "text": "Introduction paragraph with **markdown** support." },
       { "type": "divider" },
       { "type": "note", "noteId": "note-1" },
-      { "type": "lab", "labId": "lab-1" },
-      { "type": "prescription", "prescriptionId": "rx-1" }
+      { "type": "lab", "labIds": ["lab-1", "lab-2"] },
+      { "type": "medication", "medicationIds": ["med-1"] }
     ]
   }'
 ```
@@ -116,11 +137,11 @@ curl -X DELETE http://localhost:3210/evidence-docs/doc-1
 - `status`: One of `preliminary`, `final`, `corrected`
 - `patientId`: Patient identifier
 
-### Prescription
+### Medication
 
 - `id`: Unique identifier
 - `prescriber`: Object with `name`, optional `npi`, `deaNumber`
-- `medication`: Object with `name`, `strength`, `form`, `rxcui`
+- `drug`: Object with `name`, `strength`, `form`, `rxcui`
 - `dosingInstructions`: Free text instructions
 - `quantity`, `quantityUnit`: Amount prescribed
 - `daysSupply`: Number of days
@@ -143,14 +164,14 @@ curl -X DELETE http://localhost:3210/evidence-docs/doc-1
 
 ### Evidence Section Types
 
-| Type           | Fields                                      |
-| -------------- | ------------------------------------------- |
-| `header`       | `level` (1-6), `text`                       |
-| `paragraph`    | `text` (supports markdown)                  |
-| `divider`      | (no additional fields)                      |
-| `note`         | `noteId`, optional `title` override         |
-| `lab`          | `labId`, optional `title` override          |
-| `prescription` | `prescriptionId`, optional `title` override |
+| Type         | Fields                                    |
+| ------------ | ----------------------------------------- |
+| `header`     | `level` (1-6), `text`                     |
+| `paragraph`  | `text` (supports markdown)                |
+| `divider`    | (no additional fields)                    |
+| `note`       | `noteId`, optional `title`, `selections`  |
+| `lab`        | `labIds` (array), optional `title`        |
+| `medication` | `medicationIds` (array), optional `title` |
 
 ## Scripts
 
@@ -171,25 +192,34 @@ src/
 │   ├── index.ts
 │   ├── note.ts
 │   ├── lab.ts
-│   ├── prescription.ts
+│   ├── medication.ts
 │   └── evidence-doc.ts
 ├── db/                   # Database layer (SQLite)
 │   ├── index.ts
 │   ├── connection.ts
 │   ├── notes.ts
 │   ├── labs.ts
-│   ├── prescriptions.ts
+│   ├── medications.ts
 │   └── evidence-docs.ts
 ├── models/               # Business logic layer
 │   ├── index.ts
 │   ├── notes.ts
 │   ├── labs.ts
-│   ├── prescriptions.ts
+│   ├── medications.ts
 │   └── evidence-docs.ts
 └── controllers/          # API route handlers
     ├── index.ts
     ├── notes.ts
     ├── labs.ts
-    ├── prescriptions.ts
+    ├── medications.ts
     └── evidence-docs.ts
 ```
+
+## Seed Data
+
+The database comes pre-seeded with sample data for a single patient (`patient-001`):
+
+- **2 clinical notes** — a diabetes follow-up progress note and a cardiology consultation
+- **12 lab results** — A1c (current and historical), glucose, lipid panel, kidney function, TSH
+- **7 medications** — diabetes, cardiac, blood pressure, and GI medications (mix of active and completed)
+- **1 evidence document** — a sample diabetes management summary showing how sections reference patient data

@@ -4,7 +4,7 @@ import { initializeDatabase } from './db';
 import {
   notesRouter,
   labsRouter,
-  prescriptionsRouter,
+  medicationsRouter,
   evidenceDocsRouter,
 } from './controllers';
 
@@ -26,7 +26,7 @@ app.get('/health', (_req: Request, res: Response) => {
 // Mount routers
 app.use('/notes', notesRouter);
 app.use('/labs', labsRouter);
-app.use('/prescriptions', prescriptionsRouter);
+app.use('/medications', medicationsRouter);
 app.use('/evidence-docs', evidenceDocsRouter);
 
 // Start server
@@ -39,8 +39,8 @@ Available endpoints:
   GET    /notes/:id           - Get a single note
   GET    /labs                - Get all labs
   GET    /labs/:id            - Get a single lab
-  GET    /prescriptions       - Get all prescriptions
-  GET    /prescriptions/:id   - Get a single prescription
+  GET    /medications         - Get all medications
+  GET    /medications/:id     - Get a single medication
   GET    /evidence-docs       - Get all evidence documents
   GET    /evidence-docs/:id   - Get a single evidence document
   POST   /evidence-docs       - Create a new evidence document
